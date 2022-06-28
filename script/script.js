@@ -56,11 +56,11 @@ setInterval(()=>{
   // // xmlhttp.open('GET', document.location.protocol + '//api.allorigins.win/get?url='+escape("http://api.open-notify.org/iss-now.json", true),false);
 	// xmlhttp.send();
 
-  $.getJSON('http://api.open-notify.org/iss-now.json', (data) => {
+  $.getJSON('https://api.wheretheiss.at/v1/satellites/25544', (data) => {
     console.log(data);
     var myArr = data;
-		latitude = myArr.iss_position.latitude;
-		longitude = myArr.iss_position.longitude;
+		latitude = myArr.latitude;
+		longitude = myArr.longitude;
     updatemap();
   });
 
