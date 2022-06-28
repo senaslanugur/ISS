@@ -1,14 +1,18 @@
-// var map = L.map('map').setView([0,0], 4);
-// var basemap = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
-//   attribution: '',
-//   minZoom: 2,
-//   maxZoom: 16,
-// 	className: 'map-tiles'
-// });
 
-var map = L.map('map').setView([0,0], 4);
- var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
-//var basemap = L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=jsNMxT0jeaFuFMariJE1khjPTgFfpqTebJvfuYO3vBmNLzJI48b1XVWexiztksyX', {
+let lat = ""
+let lon = ""
+$.ajax({
+    url: "https://api.wheretheiss.at/v1/satellites/25544",
+    async: false,
+    dataType: 'json',
+    success: function(data) {
+        lat = data.latitude;
+        lon = data.longitude
+    }
+});
+var map = L.map('map').setView([lat,lon], 4);
+var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
+// var basemap = L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
   attribution: '',
   minZoom: 2,
   maxZoom: 16,
@@ -17,12 +21,39 @@ var map = L.map('map').setView([0,0], 4);
 
 basemap.addTo(map);
 
+// var datas = []
+//
+// var xmlhttp = new XMLHttpRequest();
+//
+//       xmlhttp.onreadystatechange = function () {
+//           if (this.readyState == 4 && this.status == 200) {
+//               var myArr = JSON.parse(this.responseText);
+//               myArr = JSON.parse(myArr.contents)
+//               // console.log(myArr)
+//               // console.log(myArr.orbitData.length)
+//               for(var i=0;i<myArr.orbitData.length;i++){
+//                 // console.log(myArr.orbitData[i].ln)
+//                 var tmp = [myArr.orbitData[i].lt,myArr.orbitData[i].ln]
+//                 datas.push(tmp)
+//
+//               }
+//           }
+//       };
+//
+// xmlhttp.open('GET', document.location.protocol + '//api.allorigins.win/get?url='+escape("https://www.astroviewer.net/iss/ws/orbit.php?sat=25544", true));
+// xmlhttp.send();
+//
+// var latlngs = [datas];
+// console.log(datas)
+// var polyline = L.polyline(datas, {color: 'red'});
+// polyline.addTo(map)
+
 var greenIcon = L.icon({ //add this new icon
 	 iconUrl: './asserts/satellite.png',
-	 // shadowUrl: 'satellite.png',
+	 // shadowUrl: './assert/satellite.png',
 
 	 iconSize:     [50, 50], // size of the icon
-	 // shadowSize:   [50, 64], // size of the shadow
+	 // shadowSize:   [25, 25], // size of the shadow
 	 iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
 	 // shadowAnchor: [4, 62],  // the same for the shadow
 	 popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
@@ -43,30 +74,33 @@ setInterval(()=>{
   //
 	// xmlhttp.onreadystatechange = function () {
 	//     if (this.readyState == 4 && this.status == 200) {
-	//         var myArr = JSON.parse(this.responseText);
+	//         var myArr = this.responseText;
 	// 				// console.log(JSON.parse(myArr.contents).iss_position)
   //         // var position = JSON.parse(myArr.contents).iss_position
-	// 				latitude = myArr.iss_position.latitude;
-	// 				longitude = myArr.iss_position.longitude;
+	// 				latitude = myArr.latitude;
+	// 				longitude = myArr.longitude;
   //
 	// 				updatemap();
 	//     }else{}
 	// };
   //
-	// xmlhttp.open('GET','http://api.open-notify.org/iss-now.json',false);
-  // // xmlhttp.open('GET', document.location.protocol + '//api.allorigins.win/get?url='+escape("http://api.open-notify.org/iss-now.json", true),false);
+  //
+  // xmlhttp.open('GET', "https://api.wheretheiss.at/v1/satellites/25544");
 	// xmlhttp.send();
 
-  $.getJSON('https://api.wheretheiss.at/v1/satellites/25544', (data) => {
-    console.log(data);
-    var myArr = data;
-		latitude = myArr.latitude;
-		longitude = myArr.longitude;
-    updatemap();
+  $.ajax({
+      url: "https://api.wheretheiss.at/v1/satellites/25544",
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
+        var myArr = data;
+    		latitude = myArr.latitude;
+    		longitude = myArr.longitude;
+        updatemap();
+      }
   });
-
-
-}, 2500)
+}, 2000)
 
 
 function updatemap() {  // Update the current player location on map
