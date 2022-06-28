@@ -6,7 +6,7 @@ var basemap = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dar
 	className: 'map-tiles'
 });
 
-// var basemap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+// var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //   attribution: 'Basemap (c) <a href="http://openstreetmap.org">OpenStreetMap</a>',
 //   minZoom: 2,
 //   maxZoom: 16,
