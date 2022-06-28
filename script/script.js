@@ -1,5 +1,5 @@
 var map = L.map('map').setView([0,0], 4);
-var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
+var basemap = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
   attribution: '',
   minZoom: 2,
   maxZoom: 16,
