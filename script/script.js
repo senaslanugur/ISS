@@ -1,5 +1,5 @@
 var map = L.map('map').setView([0,0], 4);
-var basemap = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+var basemap = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
   attribution: '',
   minZoom: 2,
   maxZoom: 16,
@@ -55,7 +55,7 @@ setInterval(()=>{
 	xmlhttp.send();
 
 
-}, 1000)
+}, 2500)
 
 
 function updatemap() {  // Update the current player location on map
