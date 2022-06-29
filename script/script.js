@@ -11,42 +11,37 @@ $.ajax({
     }
 });
 var map = L.map('map').setView([lat,lon], 4);
-var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
+var basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
 // var basemap = L.tileLayer('https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
   attribution: '',
+
   minZoom: 2,
   maxZoom: 16,
-	className: 'map-tiles'
+	className: 'map-tiles',
+  noWrap: true
 });
+
 
 basemap.addTo(map);
 
-// var datas = []
-//
-// var xmlhttp = new XMLHttpRequest();
-//
-//       xmlhttp.onreadystatechange = function () {
-//           if (this.readyState == 4 && this.status == 200) {
-//               var myArr = JSON.parse(this.responseText);
-//               myArr = JSON.parse(myArr.contents)
-//               // console.log(myArr)
-//               // console.log(myArr.orbitData.length)
-//               for(var i=0;i<myArr.orbitData.length;i++){
-//                 // console.log(myArr.orbitData[i].ln)
-//                 var tmp = [myArr.orbitData[i].lt,myArr.orbitData[i].ln]
-//                 datas.push(tmp)
-//
-//               }
-//           }
-//       };
-//
-// xmlhttp.open('GET', document.location.protocol + '//api.allorigins.win/get?url='+escape("https://www.astroviewer.net/iss/ws/orbit.php?sat=25544", true));
-// xmlhttp.send();
-//
-// var latlngs = [datas];
-// console.log(datas)
-// var polyline = L.polyline(datas, {color: 'red'});
-// polyline.addTo(map)
+const  datas = [];
+
+$.ajax({
+    url: document.location.protocol + '//api.allorigins.win/get?url='+escape("https://www.astroviewer.net/iss/ws/orbit.php?sat=25544", true),
+    async: false,
+    dataType: 'json',
+    success: function(data) {
+      // console.log(data);
+      // console.log(JSON.parse(data.contents).orbitData)
+      data = JSON.parse(data.contents).orbitData
+      for(var i = 0;i<data.length;i++){
+          datas.push([data[i].lt,data[i].ln])
+      }
+
+    }
+
+});
+console.log(datas[0])
 
 var greenIcon = L.icon({ //add this new icon
 	 iconUrl: './asserts/satellite.png',
@@ -98,10 +93,18 @@ setInterval(()=>{
     		latitude = myArr.latitude;
     		longitude = myArr.longitude;
         updatemap();
+
       }
   });
 }, 2000)
 
+var polyline = L.polyline(datas,{
+                color: 'red',
+                weight: 5,
+                opacity: .7,
+                dashArray: '20,15',
+                lineJoin: 'round'
+            }).addTo(map);
 
 function updatemap() {  // Update the current player location on map
     playerLoc.setLatLng([latitude,longitude]);
