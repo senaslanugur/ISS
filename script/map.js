@@ -1949,8 +1949,8 @@
 		})),
 		Ki = I.extend({
 			options: {
-				position: "bottomright",
-				prefix: '<a href="#!" title="Open Main Menu">Options - Other Options  </a>'
+				position: "bottomleft",
+				prefix: '<button onClick="Options()" style="background: #073763;background: linear-gradient(#000000, #073763 50%, #000000);border: 0px solid #556699;border-radius: 0px;box-shadow: 0 0px #444444;padding: 20px 45px;color: #ffffff;display: inline-block;font: normal bold 15px/1 "Calibri", sans-serif;text-align: center;">	Options </button>'
 			},
 			initialize: function(t) {
 				c(this, t), this._attributions = {}
