@@ -5,8 +5,7 @@ var basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/da
   attribution: '',
   minZoom: 2,
   maxZoom: 16,
-	className: 'map-tiles',
-  noWrap: true
+  className: 'map-tiles'
 });
 basemap.addTo(map);
 //map initilaize -- end
