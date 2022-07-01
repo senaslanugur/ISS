@@ -35,34 +35,7 @@ setInterval(()=>{
 }, 2000)
 //satellite location on the map -- end
 
-// Path of ISS -- begin
-// const  datas = [];
-//
-// $.ajax({
-//     url: document.location.protocol + '//api.allorigins.win/get?url='+escape("https://www.astroviewer.net/iss/ws/orbit.php?sat=25544", true),
-//     async: false,
-//     dataType: 'json',
-//     success: function(data) {
-//       // console.log(data);
-//       // console.log(JSON.parse(data.contents).orbitData)
-//       data = JSON.parse(data.contents).orbitData
-//       for(var i = 0;i<data.length;i++){
-//           datas.push([data[i].lt,data[i].ln])
-//       }
-//z
-//     }
-//
-// });
-//
-// var polyline = L.polyline(datas,{
-//                 color: 'green',
-//                 weight: 6,
-//                 opacity:0.2 ,
-//             }).addTo(map);
-// Path of ISS -- end
-
 //map updating -- begin
-
 function updatemap() {  // Update the current player location on map
     playerLoc.setLatLng([latitude,longitude]);
 
@@ -82,35 +55,46 @@ map.on('movestart',(e)=>{
 })
 //map updating -- end
 
+
+// Path of ISS -- begin
+function see_path(){
+const  datas = [];
+$.ajax({
+    url: document.location.protocol + '//api.allorigins.win/get?url='+escape("https://www.astroviewer.net/iss/ws/orbit.php?sat=25544", true),
+    async: false,
+    dataType: 'json',
+    success: function(data) {
+      // console.log(data);
+      // console.log(JSON.parse(data.contents).orbitData)
+      data = JSON.parse(data.contents).orbitData
+      for(var i = 0;i<data.length;i++){
+          datas.push([data[i].lt,data[i].ln])
+      }
+    }
+});
+
+var polyline = L.polyline(datas,{
+                color: 'green',
+                weight: 6,
+                opacity:0.2 ,
+            }).addTo(map);
+}
+// Path of ISS -- end
+
 //Options button attribution -- begin
 function Options(){
-  let timerInterval
   Swal.fire({
-    toast:true,
-    title: 'Loading',
-    html: ' thay will be avaliable after <b style="color:orange"></b> milliseconds.',
-    timer: 2000,
-    timerProgressBar: true,
+    title: 'Options',
     imageUrl: './asserts/satellite2.png',
     imageAlt: 'Custom image',
     imageHeight: 80,
     imageWidth: 80,
-    didOpen: () => {
-      Swal.showLoading()
-      const b = Swal.getHtmlContainer().querySelector('b')
-      timerInterval = setInterval(() => {
-        b.textContent = Swal.getTimerLeft()
-      }, 100)
-    },
-    willClose: () => {
-      clearInterval(timerInterval)
-    }
-  }).then((result) => {
-    /* Read more about handling dismissals below */
-    if (result.dismiss === Swal.DismissReason.timer) {
-      console.log('I was closed by the timer')
-    }
-  })
+    html:
+        '<button type="button" role="button"  onClick=who_iss() style="background-color:black;color:orange;">' + 'Who are in iss' + '</button>      ' +
+        '<button type="button" role="button"  onClick=another() style="background-color:black;color:orange;">' + 'Another' + '</button>',
+    showCancelButton: false,
+    showConfirmButton: false
+})
 }
 //Options button attribution -- end
 
@@ -142,7 +126,7 @@ function get_info() {
       async: false,
       dataType: 'json',
       success: function(data) {
-        console.log(data);
+        // console.log(data);
         var myArr = data;
         lat = myArr.latitude
         lon = myArr.longitude
@@ -153,3 +137,57 @@ function get_info() {
   return [lat, lon, visibility, velocity];
 }
 // get location(lat,lon), visibility and velocity information -- end
+
+// get current astronots in iss -- begin
+function get_astro(){
+  var astro = ""
+  $.ajax({
+      url: document.location.protocol + '//api.allorigins.win/get?url='+escape("http://api.open-notify.org/astros.json", true),
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+        astro = (JSON.parse(data.contents).people)
+      }
+  });
+  var html = "<ul>"
+  for (var i=0;i<astro.length;i++){
+      html += "<li><b style='color:orange;'> Name: </b>" + astro[i].name + " <br><b style='color:orange;'>Craft: </b>" +  astro[i].craft +"</li>"
+  }
+  html += "</ul>"
+  return html
+}
+// get current astronots in iss -- end
+
+// set astro to alert -- begin
+function who_iss(){
+  var astro = get_astro()
+
+  Swal.fire({
+    toast:true,
+    title: 'Astronauts Currently in the ISS',
+    html: astro,
+    imageUrl: './asserts/satellite2.png',
+    imageHeight: 80,
+    imageWidth: 80,
+    imageAlt: 'Custom image',
+  })
+
+}
+// set astro to alert -- end
+
+// another settings -- begin
+function another(){
+  Swal.fire({
+    toast:true,
+    title: 'Astronauts Currently in the ISS',
+    html: "in developing",
+    imageUrl: './asserts/satellite2.png',
+    timer:2000,
+    timerProgressBar: true,
+    imageHeight: 80,
+    imageWidth: 80,
+    imageAlt: 'Custom image',
+  })
+
+}
+// another settings -- end
