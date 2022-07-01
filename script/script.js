@@ -176,18 +176,34 @@ function who_iss(){
 // set astro to alert -- end
 
 // another settings -- begin
-function another(){
-  Swal.fire({
-    toast:true,
-    title: 'Astronauts Currently in the ISS',
-    html: "in developing",
-    imageUrl: './asserts/satellite2.png',
-    timer:2000,
-    timerProgressBar: true,
-    imageHeight: 80,
-    imageWidth: 80,
-    imageAlt: 'Custom image',
+async function another(){
+  var map_theme = ""
+  var path = ""
+  var zoom = ""
+  const inputOptions = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        '#ff0000': 'Red',
+        '#00ff00': 'Green',
+        '#0000ff': 'Blue'
+      })
+    }, 1000)
   })
+
+  const { value: color } = await Swal.fire({
+    title: 'Select your options',
+    input: 'radio',
+    inputOptions: inputOptions,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'You need to choose something!'
+      }
+    }
+  })
+
+  if (color) {
+    Swal.fire({ html: `You selected: ${color}` })
+  }
 
 }
 // another settings -- end
