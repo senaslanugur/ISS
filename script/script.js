@@ -1,7 +1,11 @@
-//map initilaize -- begin
+// map initilaize -- begin
+var map_theme = window.localStorage.getItem('theme');
+if(map_theme  == null){
+  map_theme = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps"
+}
 var info = get_info()
 var map = L.map('map').setView([info[0],info[1]], 3);
-var basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps', {
+var basemap = L.tileLayer(map_theme, {
   attribution: '',
   minZoom: 2,
   maxZoom: 16,
@@ -183,9 +187,10 @@ async function another(){
   const inputOptions = new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        '#ff0000': 'Red',
-        '#00ff00': 'Green',
-        '#0000ff': 'Blue'
+        'dark': 'Dark Map',
+        'light': 'Light Map',
+        // 'path_open': 'Show Path of ISS',
+        // 'path_close': 'Hide Path of ISS',
       })
     }, 1000)
   })
@@ -202,8 +207,18 @@ async function another(){
   })
 
   if (color) {
-    Swal.fire({ html: `You selected: ${color}` })
-  }
+    if(color == "dark"){
+      map_theme = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps"
+      window.localStorage.setItem('theme', map_theme);
+      Swal.fire({ html: `You selected: ${color}` })
+      document.location.reload(true)
+    }else{
+      map_theme = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?access-token=PyTJUlEU1OPJwCJlW1k0NC8JIt2CALpyuj7uc066O7XbdZCjWEL3WYJIk6dnXtps"
+      window.localStorage.setItem('theme', map_theme);
+      Swal.fire({ html: `You selected: ${color}` })
+      document.location.reload(true)
+    }
 
+  }
 }
 // another settings -- end
